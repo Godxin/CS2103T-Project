@@ -482,6 +482,18 @@ public class AddressBook {
     }
 
     /**
+     * Convert name keyword to all UpperCase letter
+     * @param caseSensitiveWords keywords extract from the args
+     * @return set of keywords which are all in UpperCase
+     */
+    private static Set<String> convertKeywordsToCaseInsensitive(Collection<String> caseSensitiveWords){
+        final Set<String> caseInsesitiveKeywords = new HashSet<>();
+        for(String caseInWords : caseSensitiveWords){
+            caseInsesitiveKeywords.add(caseInWords.toUpperCase());
+        }
+        return caseInsesitiveKeywords;
+    }
+    /**
      * Retrieves all persons in the full model whose names contain some of the specified keywords.
      *
      * @param keywords for searching
@@ -489,9 +501,10 @@ public class AddressBook {
      */
     private static ArrayList<String[]> getPersonsWithNameContainingAnyKeyword(Collection<String> keywords) {
         final ArrayList<String[]> matchedPersons = new ArrayList<>();
+        Set<String> caseInsensitiveKeywords = new HashSet<String>(convertKeywordsToCaseInsensitive(keywords));
         for (String[] person : getAllPersonsInAddressBook()) {
             final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
-            if (!Collections.disjoint(wordsInName, keywords)) {
+            if (!Collections.disjoint(wordsInName, caseInsensitiveKeywords)) {
                 matchedPersons.add(person);
             }
         }
