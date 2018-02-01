@@ -503,7 +503,7 @@ public class AddressBook {
         final ArrayList<String[]> matchedPersons = new ArrayList<>();
         Set<String> caseInsensitiveKeywords = new HashSet<String>(convertKeywordsToCaseInsensitive(keywords));
         for (String[] person : getAllPersonsInAddressBook()) {
-            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
+            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPersonCaseInsensitive(person)));
             if (!Collections.disjoint(wordsInName, caseInsensitiveKeywords)) {
                 matchedPersons.add(person);
             }
@@ -858,6 +858,15 @@ public class AddressBook {
      */
     private static String getNameFromPerson(String[] person) {
         return person[PERSON_DATA_INDEX_NAME];
+    }
+
+    /**
+     * Return the given person's name in full upperCase
+     * 
+     * @param person whose name you want
+     */
+    private static String getNameFromPersonCaseInsensitive(String[] person){
+        return person[PERSON_DATA_INDEX_NAME].toUpperCase();
     }
 
     /**
